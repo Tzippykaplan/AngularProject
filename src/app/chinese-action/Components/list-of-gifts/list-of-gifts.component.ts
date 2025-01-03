@@ -31,13 +31,14 @@ export class ListOfGiftsComponent implements OnInit {
   donors!: any[];
 
   constructor(
+     private router: Router, 
     private giftService: GiftsService,
     private donorService: DonorsService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private router: Router 
+    private confirmationService: ConfirmationService
+   
   ) {}
-async getData()  {
+getData()  {
    this.giftService.getAll().subscribe(data=>this.gifts=data)
 }
   ngOnInit() {
@@ -64,38 +65,40 @@ async getData()  {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.gifts = this.gifts.filter(
-          (val) => !this.selectedGifts?.includes(val)
-        );
-        this.selectedGifts = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'gifts Deleted',
-          life: 3000,
-        });
-      },
+        if (this.selectedGifts){
+        this.selectedGifts.forEach(gift => {
+          this.giftService.deleteGift(gift).subscribe(data=>{ this.selectedGifts = null;
+            this.getData()
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'gifts Deleted',
+              life: 3000,
+            })})}
+         )} },
     });
   }
-
   editgift(gift: Gift) {
     this.gift = { ...gift };
     this.giftDialog = true;
   }
 
-   deleteGift(gift: Gift) {
+ deleteGift(gift: Gift) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + gift.name + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-         this.giftService.deleteGift(gift).subscribe(data=>{this.getData();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'gift Deleted',
-            life: 3000,
-          });});
+      accept: async ()  => {
+       this.giftService.deleteGift(gift).subscribe(data=>{
+          this.getData()
+        })
+       
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'gift Deleted',
+          life: 3000,
+        });
       },
     });
   }
@@ -177,5 +180,5 @@ async getData()  {
 {
   this.router.navigate(['/donors', { id: 123 }]);
 }
-}
 
+}

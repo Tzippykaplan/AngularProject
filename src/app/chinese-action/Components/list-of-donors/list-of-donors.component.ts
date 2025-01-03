@@ -5,8 +5,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-list-of-dodnors',
-  templateUrl: './list-of-dodnors.component.html',
-  styleUrl: './list-of-dodnors.component.css',
+  templateUrl: './list-of-donors.component.html',
+  styleUrl: './list-of-donors.component.css',
   styles: [
     `:host ::ng-deep .p-dialog .gift-image {
             width: 150px;
@@ -16,7 +16,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   ],
 })
 
-export class ListOfDodnorsComponent {
+export class ListOfDonorsComponent {
+  layout: string = 'list';
+  options: string[] = ['list', 'grid'];
   donorDialog: boolean = false;
 
   donors!: Donor[];
@@ -33,8 +35,8 @@ export class ListOfDodnorsComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
-async getData()  {
-  await this.donorService.getAll().subscribe(data=>this.donors=data)
+ getData()  {
+ this.donorService.getAll().subscribe(data=>this.donors=data)
 }
   ngOnInit() {
     this.getData()
@@ -58,17 +60,17 @@ async getData()  {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.donors = this.donors.filter(
-          (val) => !this.selectedDonors?.includes(val)
-        );
-        this.selectedDonors = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'donors Deleted',
-          life: 3000,
-        });
-      },
+        if (this.selectedDonors){
+        this.selectedDonors.forEach(donor => {
+          this.donorService.deleteDonor(donor).subscribe(data=>{ this.selectedDonors = null;
+            this.getData()
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'gifts Deleted',
+              life: 3000,
+            })})}
+         )} },
     });
   }
 

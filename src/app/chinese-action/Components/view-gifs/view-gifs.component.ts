@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { GiftsService } from '../../../services/gifts.service';
 import { Gift } from '../../../Models/gift.model';
-import { DataView } from 'primeng/dataview';
 import { Tag } from 'primeng/tag';
 import { Rating } from 'primeng/rating';
 import { SelectButton } from 'primeng/selectbutton';
@@ -18,9 +17,8 @@ import { CommonModule } from '@angular/common';
 
 })
 export class ViewGifsComponent {
-  layout: string = 'list';
-  options: string[] = ['list', 'grid'];
-    gifts:Gift[]=[];
+  layout: string = 'grid';
+    gifts!:Gift[];
 
 
     constructor(private giftService: GiftsService) {}

@@ -218,7 +218,8 @@ import { CommonModule } from '@angular/common';
     InputIconModule,
     AutoFocusModule,
     DataViewModule,
-    CommonModule,
+    CommonModule,  
+    ButtonModule,
   ],
   exports: [
     AvatarModule,
