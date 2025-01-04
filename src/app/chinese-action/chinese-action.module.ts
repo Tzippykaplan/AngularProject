@@ -10,13 +10,16 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { DonorFormComponent } from './Components/donor-form/donor-form.component';
 import { DonorsService } from '../services/donor.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ViewGifsComponent } from './Components/view-gifs/view-gifs.component';
+import {  ViewGiftsComponent } from './Components/view-gifts/view-gifts.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { LoginComponent } from './Components/login/login.component';
 import { DataViewModule } from 'primeng/dataview';
 import { TagModule } from 'primeng/tag';
 import { BuyGiftsComponent } from './Components/buy-gifts/buy-gifts.component';
 import { ListOfDonorsComponent } from './Components/list-of-donors/list-of-donors.component';
+import { CartComponent } from './Components/cart/cart.component';
+import { OrderListModule } from 'primeng/orderlist';
+import { PayLoginComponent } from './Components/pay-login/pay-login.component';
 
 
 
@@ -28,13 +31,15 @@ import { ListOfDonorsComponent } from './Components/list-of-donors/list-of-donor
     DonorFormComponent,
     ListOfDonorsComponent,
     DonorFormComponent,
-    ViewGifsComponent,
+   ViewGiftsComponent,
     RegisterComponent,
     LoginComponent,
-    BuyGiftsComponent
+    BuyGiftsComponent,
+    CartComponent
     
     ],
-  imports: [  
+  imports: [ 
+    OrderListModule, 
     DataViewModule, ButtonModule, TagModule,
     CommonModule,
     ImportsModule,
@@ -42,11 +47,13 @@ import { ListOfDonorsComponent } from './Components/list-of-donors/list-of-donor
     FormsModule,
 ReactiveFormsModule,
     RouterModule.forChild([{path: 'donors', component: ListOfDonorsComponent},
-      {path: 'viewGift', component: ViewGifsComponent },
+      {path: 'viewGift', component: ViewGiftsComponent },
       {path: 'viewGifts', component:BuyGiftsComponent },
       {path: '', component: ListOfGiftsComponent  },
       {path: 'form', component: DonorFormComponent  },
-      {path: 'register', component: RegisterComponent  }
+      {path: 'register', component: RegisterComponent  },
+      {path: 'cart', component: CartComponent },
+      {path: 'payLogin', component: PayLoginComponent }
     ])
 
   ],

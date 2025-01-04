@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewGifsComponent } from './view-gifs.component';
+import { PayLoginComponent } from './pay-login.component';
 
-describe('ViewGifsComponent', () => {
-  let component: ViewGifsComponent;
-  let fixture: ComponentFixture<ViewGifsComponent>;
+describe('PayLoginComponent', () => {
+  let component: PayLoginComponent;
+  let fixture: ComponentFixture<PayLoginComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ViewGifsComponent]
+      declarations: [PayLoginComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ViewGifsComponent);
+    fixture = TestBed.createComponent(PayLoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -9,23 +9,33 @@ import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-view-gifs',
-  templateUrl: './view-gifs.component.html',
-  styleUrl: './view-gifs.component.css',
+  selector: 'app-view-gifts',
+  templateUrl: './view-gifts.component.html',
+  styleUrl: './view-gifts.component.css',
 
 })
-export class ViewGifsComponent {
+export class ViewGiftsComponent {
   layout: string = 'grid';
     gifts!:Gift[];
+    cart:any
 
-
-    constructor(private giftService: GiftsService) {}
+    constructor(private giftService: GiftsService,   private router: Router) {
+      
+    }
 
     ngOnInit() {
         this.giftService.getAll().subscribe(data=>{this.gifts= data.slice(0, 12)})
     }
-
-
+    addToCart(gift:Gift){
+    this.cart = JSON.parse(sessionStorage.getItem("cart") || "[]")
+   const currentItem= this.cart.find((item:any)=>item.gift.id===gift.id)
+      currentItem?currentItem.quantity+=1:this.cart.push({"gift":gift,"quantity":1})
+      sessionStorage.setItem("cart",JSON.stringify(this.cart))
+    }
+    goToCart(){
+      this.router.navigate(['/cart']);
+    }
 }
