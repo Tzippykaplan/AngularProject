@@ -33,7 +33,6 @@ export class DonorsService {
   }
   deleteDonor(donoridToDelete:Donor) {
    console.log(donoridToDelete);
-    donoridToDelete.id
    return this.http.delete(`${this.apiUrl}\\${donoridToDelete.id}`)
   }
   UppdateDonor(donorToUpdate: Donor) {

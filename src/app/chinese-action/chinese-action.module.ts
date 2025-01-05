@@ -20,6 +20,7 @@ import { ListOfDonorsComponent } from './Components/list-of-donors/list-of-donor
 import { CartComponent } from './Components/cart/cart.component';
 import { OrderListModule } from 'primeng/orderlist';
 import { PayLoginComponent } from './Components/pay-login/pay-login.component';
+import { PayComponent } from './Components/pay/pay.component';
 
 
 
@@ -35,10 +36,12 @@ import { PayLoginComponent } from './Components/pay-login/pay-login.component';
     RegisterComponent,
     LoginComponent,
     BuyGiftsComponent,
-    CartComponent
-    
+    CartComponent,
+    PayLoginComponent,
+    PayComponent
     ],
   imports: [ 
+    
     OrderListModule, 
     DataViewModule, ButtonModule, TagModule,
     CommonModule,
@@ -51,9 +54,11 @@ ReactiveFormsModule,
       {path: 'viewGifts', component:BuyGiftsComponent },
       {path: '', component: ListOfGiftsComponent  },
       {path: 'form', component: DonorFormComponent  },
+      {path: 'login', component: LoginComponent },
       {path: 'register', component: RegisterComponent  },
       {path: 'cart', component: CartComponent },
-      {path: 'payLogin', component: PayLoginComponent }
+      {path: 'payLogin', component: PayLoginComponent },
+      {path: 'pay', component: PayComponent }
     ])
 
   ],

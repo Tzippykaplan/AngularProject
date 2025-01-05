@@ -21,6 +21,8 @@ export class RegisterComponent {
 
 }
 createUser(){
-  this.userService.creatUser(this.frmRegister.value).subscribe()
+  this.userService.creatUser(this.frmRegister.value).subscribe(data=>{
+    sessionStorage.setItem("user", JSON.stringify(data.id));
+  })
 }
 }
