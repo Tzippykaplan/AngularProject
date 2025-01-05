@@ -145,7 +145,7 @@
                                 <div class="flex flex-column gap-4 mt-4">
                                     <span class="text-2xl font-semibold">{{ '₪' + gift.price }}</span>
                                     <div class="flex gap-2">
-                                        <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="Buy Ticket"  />
+                                        <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="Buy Ticket"  (click)="addToCart(gift)"/>
                                         <!-- [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" -->
                                         <p-button icon="pi pi-heart" [outlined]="true" />
                                     </div>
@@ -157,3 +157,4 @@
             </ng-template>
     </p-dataView>
 </div>
+<button (click)="goToCart()">go to cart</button>

@@ -1,14 +1,14 @@
-<!-- <form  [formGroup]="frmLogin">
+<form  [formGroup]="frmLogin">
     <div>
         <input pInputText placeholder="email" aria-label="email" class="form-control" formControlName="email" 
-        [ngClass]="{'has-error':!frmRegister.controls['email'].valid && frmRegister.controls['email'].touched}"/>
-        <span *ngIf="frmRegister.controls['email'].errors  && frmRegister.controls['email'].touched ">email is require</span>
+        [ngClass]="{'has-error':!frmLogin.controls['email'].valid && frmLogin.controls['email'].touched}"/>
+        <span *ngIf="frmLogin.controls['email'].errors  && frmLogin.controls['email'].touched ">email is require</span>
     </div>
     <div class="form-group row">
         <input pInputText placeholder="password" aria-label="password" class="form-control" formControlName="password" 
-        [ngClass]="{'has-error':!frmRegister.controls['password'].valid && frmRegister.controls['password'].touched}"/>
-        <span *ngIf="frmRegister.controls['password'].errors  && frmRegister.controls['password'].touched ">password is require</span>
+        [ngClass]="{'has-error':!frmLogin.controls['password'].valid && frmLogin.controls['password'].touched}"/>
+        <span *ngIf="frmLogin.controls['password'].errors  && frmLogin.controls['password'].touched ">password is require</span>
     </div>
-    <button [disabled]="frmRegister.invalid" (click)="login()">send</button>
+    <button [disabled]="frmLogin.invalid" (click)="login()">send</button>
 </form>
- -->
+
