@@ -30,7 +30,8 @@ private apiUrl = 'https://localhost:5001/api/Users';
   UppdateUser(userToUpdate: User):Observable<Object> {
     return this.http.put(`${this.apiUrl}/${userToUpdate.id}`, userToUpdate)
   }
-  // Login(email:string,password: string):Observable<User> {
-  //   return this.http.delete(`${this.apiUrl}/${email}`)
-  //  }
+  Login(form:any,):Observable<User> {
+    
+    return this.http.post<User>(`${this.apiUrl}/login?email=${form.email}&password=${form.password}`,"")
+  }
 }
