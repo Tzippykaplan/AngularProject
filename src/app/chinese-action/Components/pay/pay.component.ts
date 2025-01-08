@@ -9,7 +9,7 @@ import { RaffleService } from '../../../services/raffle.service';
 })
 export class PayComponent {
   paymentForm: FormGroup;
-raffleService:RaffleService=inject(RaffleService)
+  raffleService:RaffleService=inject(RaffleService)
   constructor() {
     this.paymentForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -23,14 +23,16 @@ raffleService:RaffleService=inject(RaffleService)
     if (this.paymentForm.valid) {
       console.log('Payment Details:', this?.paymentForm.value);
       alert('Payment Successful!');
-      this.raffleService.creatLotteryTickets(JSON.parse(sessionStorage.getItem("user")||"-1"),JSON.parse(sessionStorage.getItem("cart")||"[]"))
+      this.raffleService.creatLotteryTickets(JSON.parse(sessionStorage.getItem("user")||"-1"),JSON.parse(sessionStorage.getItem("cart")||"[]")).subscribe((data)=>{
+        console.log(data);
+        }) 
     } else {
       alert('Please fix the errors before submitting.');
     }
   }
 raffle(){
   this.raffleService.getRaffleResponseList().subscribe((data)=>{
-console.log(data);
+  console.log(data);
 
   }) 
 }

@@ -16,24 +16,22 @@ export class RaffleService {
      getRaffleResponseList(): Observable<RaffleResponse[]> {
        return this.http.get<RaffleResponse[]>(`${this.apiUrl}/raffle`);
      }
-     creatLotteryTickets(id:number,cart:any): void{
-      const ticketRequests: Observable<LotteryTicket>[] = [];
+     creatLotteryTickets(id:number,cart:any):Observable<LotteryTicket[]>{
+      const LotteryTickets:LotteryTicket[]=[];
       cart.forEach((item:any)=>{
         const lotteryTicket: LotteryTicket = { userId: id, giftId: item.gift.id ,id:0};
         let i=0
         while (i<item.quantity) {
-  
-          this.creatLotteryTicket(lotteryTicket).subscribe(data=>{
+           LotteryTickets.push(lotteryTicket);
            i++
-          })
-}
+          }
       })
-  
+      return this.creatLotteryTicket(LotteryTickets);
 
      }
-     creatLotteryTicket(lotteryTicket:LotteryTicket): Observable<LotteryTicket> {
+     creatLotteryTicket(lotteryTickets:LotteryTicket[]): Observable<LotteryTicket[]> {
     
-          return (this.http.post<LotteryTicket>(this.apiUrl,lotteryTicket ))
+          return (this.http.post<LotteryTicket[]>(this.apiUrl,lotteryTickets ))
  } 
     
 }
