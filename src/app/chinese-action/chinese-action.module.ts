@@ -21,6 +21,8 @@ import { CartComponent } from './Components/cart/cart.component';
 import { OrderListModule } from 'primeng/orderlist';
 import { PayLoginComponent } from './Components/pay-login/pay-login.component';
 import { PayComponent } from './Components/pay/pay.component';
+import { NavbarComponent } from './Components/navbar/navbar.component';
+import { HomeComponent } from './Components/home/home.component';
 
 
 
@@ -38,7 +40,9 @@ import { PayComponent } from './Components/pay/pay.component';
     BuyGiftsComponent,
     CartComponent,
     PayLoginComponent,
-    PayComponent
+    PayComponent,
+    NavbarComponent,
+    HomeComponent
     ],
   imports: [ 
     
@@ -52,18 +56,20 @@ ReactiveFormsModule,
     RouterModule.forChild([{path: 'donors', component: ListOfDonorsComponent},
       {path: 'viewGift', component: ViewGiftsComponent },
       {path: 'viewGifts', component:BuyGiftsComponent },
-      {path: '', component: ListOfGiftsComponent  },
+      {path: 'gifts', component: ListOfGiftsComponent  },
       {path: 'form', component: DonorFormComponent  },
       {path: 'login', component: LoginComponent },
       {path: 'register', component: RegisterComponent  },
       {path: 'cart', component: CartComponent },
       {path: 'payLogin', component: PayLoginComponent },
-      {path: 'pay', component: PayComponent }
+      {path: 'pay', component: PayComponent },
+      {path:'', component:HomeComponent},
+      {path: 'navbar', component: NavbarComponent },
     ])
 
   ],
   providers: [MessageService, ConfirmationService, GiftsService,DonorsService],
-  exports:[],
+  exports:[NavbarComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ChineseActionModule { }
