@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Donor } from '../../../Models/donor/donor';
 import { DonorsService } from '../../../services/donor.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -19,7 +19,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class ListOfDonorsComponent {
   layout: string = 'list';
   options: string[] = ['list', 'grid'];
-  donorDialog: boolean = false;
+  visible: boolean = false;
 
   donors!: Donor[];
 
@@ -40,7 +40,6 @@ export class ListOfDonorsComponent {
 }
   ngOnInit() {
     this.getData()
-   this.donorService.getAll().subscribe(data=>this.donors=data);
   }
 
   openNew() {
@@ -51,7 +50,7 @@ export class ListOfDonorsComponent {
       email:'',
     };
     this.submitted = false;
-    this.donorDialog = true;
+    this.visible = true;
   }
 
   deleteSelectedDonors() {
@@ -76,7 +75,7 @@ export class ListOfDonorsComponent {
 
   editdonor(donor: Donor) {
     this.donor = { ...donor };
-    this.donorDialog = true;
+    this.visible = true;
   }
 
  async  deleteDonor(donor: Donor) {
@@ -85,88 +84,60 @@ export class ListOfDonorsComponent {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: async ()  => {
-        await this.donorService.deleteDonor(donor).toPromise();
-        await this.getData();
+         this.donorService.deleteDonor(donor).subscribe(data=>{
+        this.getData()
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
           detail: 'donor Deleted',
           life: 3000,
-        });
+        })});
       },
     });
   }
 
   hideDialog() {
-    this.donorDialog = false;
+    this.visible = false;
     this.submitted = false;
   }
-
- async savedonor() {
-    this.submitted = true;
-    if (this.donor.firstName?.trim()) {
-      if (this.donor.id) {
-      await this.donorService.UppdateDonor(this.donor).toPromise()
-        await this.getData()
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'donor Updated',
-          life: 3000,
-        });
-      } else {
-        await this.donorService.creatDonor(this.donor).toPromise();
-        await this.getData()
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'donor Created',
-          life: 3000,
-        });
-      }
-
-      this.donors = [...this.donors];
-      this.donorDialog = false;
-      this.donor = {
-        id: 0,
-        firstName: '',
-        lastName:'',
-        email:'',
-      };
-    }
+  refreshData(refresh:boolean){
+  refresh?this.getData():""
   }
 
-  findIndexById(id: number): number {
-    let index = -1;
-    for (let i = 0; i < this.donors.length; i++) {
-      if (this.donors[i].id === id) {
-        index = i;
-        break;
-      }
-    }
+//  async savedonor() {
+//     this.submitted = true;
+//     if (this.donor.firstName?.trim()) {
+//       if (this.donor.id) {
+//       await this.donorService.UppdateDonor(this.donor).toPromise()
+//         await this.getData()
+//         this.messageService.add({
+//           severity: 'success',
+//           summary: 'Successful',
+//           detail: 'donor Updated',
+//           life: 3000,
+//         });
+//       } else {
+//         await this.donorService.creatDonor(this.donor).toPromise();
+//         await this.getData()
+//         this.messageService.add({
+//           severity: 'success',
+//           summary: 'Successful',
+//           detail: 'donor Created',
+//           life: 3000,
+//         });
+//       }
 
-    return index;
-  }
+//       this.donors = [...this.donors];
+//       this.donorDialog = false;
+//       this.donor = {
+//         id: 0,
+//         firstName: '',
+//         lastName:'',
+//         email:'',
+//       };
+//     }
+//   }
 
-  createId(): string {
-    let id = '';
-    var chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
 
-  getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-    }
-    return 'danger'
-  }
+
 }

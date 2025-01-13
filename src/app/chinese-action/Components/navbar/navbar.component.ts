@@ -49,7 +49,12 @@ export class NavbarComponent implements OnInit{
                       label: 'Users',
                       icon: 'pi pi-user'
 
-                  }
+                  },        {
+                    label: 'Raffle',
+                    icon: 'pi pi-tags',
+                    routerLink: '/raffle',
+
+                }
             
               ]
           },

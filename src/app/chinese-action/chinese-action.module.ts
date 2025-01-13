@@ -23,6 +23,7 @@ import { PayLoginComponent } from './Components/pay-login/pay-login.component';
 import { PayComponent } from './Components/pay/pay.component';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { HomeComponent } from './Components/home/home.component';
+import { RaffleComponent } from './Components/raffle/raffle.component';
 
 
 
@@ -42,7 +43,8 @@ import { HomeComponent } from './Components/home/home.component';
     PayLoginComponent,
     PayComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    RaffleComponent
     ],
   imports: [ 
     
@@ -64,7 +66,7 @@ ReactiveFormsModule,
       {path: 'payLogin', component: PayLoginComponent },
       {path: 'pay', component: PayComponent },
       {path:'', component:HomeComponent},
-      {path: 'navbar', component: NavbarComponent },
+      {path: 'raffle', component: RaffleComponent },
     ])
 
   ],

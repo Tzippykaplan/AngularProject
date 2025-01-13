@@ -1,4 +1,5 @@
-
+<p-dialog [(visible)]="visible"  [style]="{ width: '450px' }" header="donor Details" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+   
 <form [formGroup]="frmDonor">
     <p class="bold"></p>
     <div class="form-group row">
@@ -27,6 +28,7 @@
         </div>
     </div>
 
-    <button [disabled]="frmDonor.invalid" (click)="save()">send</button>
-    <!-- {{frmDonor | json}} -->
+    <button [disabled]="frmDonor.invalid" (click)="savedonor()">send</button>
+    <!-- {{frmDonor | json}}  -->
 </form>
+</p-dialog>

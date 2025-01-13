@@ -24,12 +24,14 @@
         <h5 class="m-0">Manage Donor</h5>
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
-          <!-- <input
+          <input
               pInputText
               type="text"
-              (input)="dt.filterGlobal($event.target.value, 'contains')"
               placeholder="Search..."
-            /> -->
+              filterBy="gift.name"
+              filterPlaceholder="Filter by name"/>
+              <!-- (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search..." -->
         </span>
       </div>
     </ng-template>
@@ -109,9 +111,7 @@
       <p-button label="Save" icon="pi pi-check" [text]="true" (onClick)="savedonor()" />
     </ng-template>
   </p-dialog> -->
-  <p-dialog [(visible)]="donorDialog" [style]="{ width: '450px' }" header="donor Details" [modal]="true" styleClass="p-fluid">
-    <app-donor-form [donor]="donor"/>
-  </p-dialog>
+    <app-donor-form [donor]="donor" [(visible)]="visible" (refreshData)="refreshData($event)"/>
   <!-- [style]="{width:'450px'}" -->
-  <p-confirmDialog  />
+  <p-confirmDialog [style]="{width:'450px'}" />
 </div>
