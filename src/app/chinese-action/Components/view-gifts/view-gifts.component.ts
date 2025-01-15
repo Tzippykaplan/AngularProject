@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { GiftsService } from '../../../services/gifts.service';
 import { Gift } from '../../../Models/gift.model';
 import { Tag } from 'primeng/tag';
@@ -10,6 +10,7 @@ import { RatingModule } from 'primeng/rating';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { GlobalService } from '../../../services/global.service';
 
 @Component({
   selector: 'app-view-gifts',
@@ -21,7 +22,7 @@ export class ViewGiftsComponent {
   layout: string = 'grid';
     gifts!:Gift[];
     cart:any
-
+globalSrv=inject(GlobalService)
     constructor(private giftService: GiftsService,   private router: Router) {
       
     }
@@ -37,6 +38,7 @@ export class ViewGiftsComponent {
      const currentItem= this.cart.find((item:any)=>item.gift.id===gift.id)
       currentItem?currentItem.quantity+=1:this.cart.push({"gift":gift,"quantity":1})
       sessionStorage.setItem("cart",JSON.stringify(this.cart))
+      this.globalSrv.setCartQuantity(1);
     }
     goToCart(){
       this.router.navigate(['/cart']);

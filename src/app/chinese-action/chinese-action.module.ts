@@ -24,6 +24,8 @@ import { PayComponent } from './Components/pay/pay.component';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { HomeComponent } from './Components/home/home.component';
 import { RaffleComponent } from './Components/raffle/raffle.component';
+import { RoleType } from '../Models/user/user.model';
+import { roleGuard } from './Guard/role.guard';
 
 
 
@@ -55,18 +57,23 @@ import { RaffleComponent } from './Components/raffle/raffle.component';
     NoopAnimationsModule,
     FormsModule,
 ReactiveFormsModule,
-    RouterModule.forChild([{path: 'donors', component: ListOfDonorsComponent},
+    RouterModule.forChild([
+    
       {path: 'viewGift', component: ViewGiftsComponent },
       {path: 'viewGifts', component:BuyGiftsComponent },
-      {path: 'gifts', component: ListOfGiftsComponent  },
-      {path: 'form', component: DonorFormComponent  },
       {path: 'login', component: LoginComponent },
-      {path: 'register', component: RegisterComponent  },
-      {path: 'cart', component: CartComponent },
-      {path: 'payLogin', component: PayLoginComponent },
+      {path: 'register', component: RegisterComponent },
+      {path: 'cart', component: CartComponent},
+      {path: 'payLogin', component: PayLoginComponent},
       {path: 'pay', component: PayComponent },
       {path:'', component:HomeComponent},
+      {path: 'admin' ,canActivate: [roleGuard],
+        data: { roles: [RoleType.ADMIN] },children:[
+      {path: '', redirectTo:'gifts', pathMatch: 'full'},
+      {path: 'gifts', component: ListOfGiftsComponent  },
+      {path: 'donors', component: ListOfDonorsComponent},
       {path: 'raffle', component: RaffleComponent },
+      ]},
     ])
 
   ],
