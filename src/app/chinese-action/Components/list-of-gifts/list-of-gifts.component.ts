@@ -111,7 +111,8 @@ getData()  {
 
   savegift() {
     this.submitted = true;
-    if (this.gift.name?.trim() && this.gift.price && this.gift.price >= 10 && this.gift.description?.trim()) {
+    if (this.gift.name?.trim() && this.gift.price && this.gift.price >= 10
+     && this.gift.description?.trim() && this.isUniqueName==true) {
       if (this.gift.id) {
        this.giftService.UppdateGift(this.gift).subscribe(data=>{this.getData()
         this.messageService.add({
@@ -129,7 +130,14 @@ getData()  {
             life: 3000,
           });});
 
-      }
+      }}else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'error',
+          detail: 'cant save with validation errors',
+          life: 3000,
+        });
+    }
 
       this.gifts = [...this.gifts];
       this.giftDialog = false;
@@ -141,7 +149,7 @@ getData()  {
         imgUrl: '',
         price:10,
       };
-    }
+    
   }
 
   findIndexById(id: number): number {
