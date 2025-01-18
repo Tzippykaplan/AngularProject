@@ -140,9 +140,10 @@
     >
       <ng-template pTemplate="content">
         <img
-          [src]="'https://primefaces.org/cdn/primeng/images/demo/gift/' + gift.imgUrl"
+          [src]="'/' + gift.imgUrl"
           [alt]="gift.imgUrl"
-          class="block m-auto pb-3"
+          [alt]="gift.name"
+          width="100"
           *ngIf="gift.imgUrl"
         />
         <div class="field">
@@ -154,9 +155,14 @@
             [(ngModel)]="gift.name"
             required
             autofocus
+            (blur)="checkUniqueName()"
+            [ngClass]="{'has-error': !isUniqueName && submitted || !gift.name && submitted}"
           />
-          <small class="p-error" *ngIf="submitted && !gift.name">
+          <small class="p-error" *ngIf=" !gift.name">
             Name is required.
+          </small>
+          <small class="p-error" *ngIf=" !isUniqueName && gift.name">
+            Name is not unique.
           </small>
         </div>
         <div class="field">
@@ -171,7 +177,7 @@
           >
           </textarea>
         </div>
-        <div class="field card flex justify-content-center">
+        <div class="field">
           <label for="donores">Donor Id</label>
           <p-dropdown
             [(ngModel)]="gift.donorId"
@@ -180,6 +186,7 @@
             optionLabel="firstName"
             optionValue="id"
             value="gift.donorId"
+            class="w-full"
           >
             <ng-template let-choosenOption pTemplate="selectedItem">
               <p-tag [value]="choosenOption.firstName"></p-tag>
@@ -200,8 +207,10 @@
           [(ngModel)]="gift.price"
           required
           autofocus
-          
           />
+          <small class="p-error" *ngIf="!gift.price || gift.price < 10">
+            Price is required and should be at least 10.
+          </small>
         </div>
         <div class="field">
           <label for="ImgeUrl">ImgeUrl</label>

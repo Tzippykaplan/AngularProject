@@ -14,22 +14,23 @@
 
 <div class="flex flex-column md:flex-row">
     <div class="w-full md:w-5 flex flex-column align-items-center justify-content-center gap-3 py-5">
-        <form  [formGroup]="frmLogin">
-        <div class="flex flex-wrap justify-content-center align-items-center gap-2">
-            <label class="w-6rem">Username</label>
-            <input pInputText id="username" type="text" class="w-12rem" formControlName="email" 
-            [ngClass]="{'has-error':!frmLogin.controls['email'].valid && frmLogin.controls['email'].touched}" />
-            <span *ngIf="frmLogin.controls['email'].errors  && frmLogin.controls['email'].touched ">email is require</span>
-        </div>
-        <div class="flex flex-wrap justify-content-center align-items-center gap-2">
-            <label class="w-6rem">Password</label>
-            <input pInputText id="password" type="password" class="w-12rem" formControlName="password" 
-            [ngClass]="{'has-error':!frmLogin.controls['password'].valid && frmLogin.controls['password'].touched}"/>
-            <span *ngIf="frmLogin.controls['password'].errors  && frmLogin.controls['password'].touched ">password is require</span>
-        </div>
-   
-        <p-button label="Login" icon="pi pi-user" styleClass="w-10rem mx-auto" [disabled]="frmLogin.invalid" (click)="login()"/>
- </form>
+        <form [formGroup]="frmLogin" class="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input pInputText id="username" type="text" class="form-control" formControlName="email" 
+                [ngClass]="{'has-error':!frmLogin.controls['email'].valid && frmLogin.controls['email'].touched}" />
+                <span *ngIf="frmLogin.controls['email'].errors && frmLogin.controls['email'].touched" class="error-message">Email is required</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input pInputText id="password" type="password" class="form-control" formControlName="password" 
+                [ngClass]="{'has-error':!frmLogin.controls['password'].valid && frmLogin.controls['password'].touched}" />
+                <span *ngIf="frmLogin.controls['password'].errors && frmLogin.controls['password'].touched" class="error-message">Password is required</span>
+            </div>
+            
+            <p-button label="Login" icon="pi pi-user" styleClass="login-btn" [disabled]="frmLogin.invalid" (click)="login()"/>
+        </form>
     </div>
 
     <div class="w-full md:w-2">

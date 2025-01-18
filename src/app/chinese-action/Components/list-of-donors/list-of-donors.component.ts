@@ -61,7 +61,10 @@ export class ListOfDonorsComponent {
       accept: () => {
         if (this.selectedDonors){
         this.selectedDonors.forEach(donor => {
-          this.donorService.deleteDonor(donor).subscribe(data=>{ this.selectedDonors = null;
+          this.donorService.deleteDonor(donor).subscribe(data=>{ 
+        
+            
+            this.selectedDonors = null;
             this.getData()
             this.messageService.add({
               severity: 'success',
@@ -78,24 +81,46 @@ export class ListOfDonorsComponent {
     this.visible = true;
   }
 
- async  deleteDonor(donor: Donor) {
+  deleteDonor(donor: Donor) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + donor.firstName + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
-      accept: async ()  => {
-         this.donorService.deleteDonor(donor).subscribe(data=>{
-        this.getData()
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'donor Deleted',
-          life: 3000,
-        })});
+      accept: () => {
+        this.donorService.deleteDonor(donor).subscribe({
+          next: (data) => {
+          this.getData();
+          this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'Donor deleted',
+              life: 3000,
+            });
+          },
+          error: (e) => {
+            console.error(e);  
+  
+            if (e.status === 400) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Cannot delete donor with gifts on his name.',
+                life: 3000,
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Something went wrong while deleting the donor.',
+                life: 3000,
+              });
+            }
+          }
+        });
       },
     });
   }
-
+  
   hideDialog() {
     this.visible = false;
     this.submitted = false;

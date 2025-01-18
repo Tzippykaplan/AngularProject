@@ -29,6 +29,7 @@ export class ListOfGiftsComponent implements OnInit {
   submitted: boolean = false;
 
   donors!: any[];
+  isUniqueName:boolean=true;
 
   constructor(
      private router: Router, 
@@ -110,7 +111,7 @@ getData()  {
 
   savegift() {
     this.submitted = true;
-    if (this.gift.name?.trim()) {
+    if (this.gift.name?.trim() && this.gift.price && this.gift.price >= 10 && this.gift.description?.trim()) {
       if (this.gift.id) {
        this.giftService.UppdateGift(this.gift).subscribe(data=>{this.getData()
         this.messageService.add({
@@ -180,5 +181,11 @@ getData()  {
 {
   this.router.navigate(['/donors', { id: 123 }]);
 }
+checkUniqueName(){
+this.giftService.isUniqueName(this.gift).subscribe(data=>{
+this.isUniqueName=data;
+console.log(data);
 
+})
+}
 }

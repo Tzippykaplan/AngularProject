@@ -28,6 +28,9 @@ export class GiftsService {
   UppdateGift(giftToUpdate: Gift):Observable<Object> {
     return this.http.put(`${this.apiUrl}/${giftToUpdate.id}`, giftToUpdate)
   }
+  isUniqueName(gift:Gift):Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/isUnique`, gift)
+  }
 }
 
 
