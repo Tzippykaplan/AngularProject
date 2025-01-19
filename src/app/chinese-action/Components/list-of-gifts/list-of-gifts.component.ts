@@ -32,7 +32,7 @@ export class ListOfGiftsComponent implements OnInit {
   isUniqueName:boolean=true;
 
   constructor(
-     private router: Router, 
+    private router: Router, 
     private giftService: GiftsService,
     private donorService: DonorsService,
     private messageService: MessageService,
@@ -52,7 +52,7 @@ getData()  {
       id: 0,
      name: '',
       description: '',
-      donorId: 0,
+      donorId: this.donors[0].id,
       imgUrl: '',
       price:10,
     };
@@ -112,7 +112,7 @@ getData()  {
   savegift() {
     this.submitted = true;
     if (this.gift.name?.trim() && this.gift.price && this.gift.price >= 10
-     && this.gift.description?.trim() && this.isUniqueName==true) {
+     && this.gift.description?.trim() && this.isUniqueName==true ) {
       if (this.gift.id) {
        this.giftService.UppdateGift(this.gift).subscribe(data=>{this.getData()
         this.messageService.add({
@@ -141,11 +141,12 @@ getData()  {
 
       this.gifts = [...this.gifts];
       this.giftDialog = false;
+      this.isUniqueName=true
       this.gift = {
         id: 0,
         name: '',
         description: '',
-        donorId: 0,
+        donorId: this.donors[0].id,
         imgUrl: '',
         price:10,
       };

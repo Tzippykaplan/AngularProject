@@ -74,3 +74,7 @@ input.form-control::placeholder {
 input.form-control:focus::placeholder {
     color: transparent;
 }
+.label-top {
+    display: block;
+    margin-bottom: 0.5rem;  /* Adjust the spacing between label and input */
+  }

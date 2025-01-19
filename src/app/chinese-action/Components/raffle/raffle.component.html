@@ -20,10 +20,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td>{{ item.user.firstName }} {{item.user.lastName }}</td>
-    <td>{{  item.user.phone }}</td>
-    <td>{{  item.user.email }}</td>
-    <td> <div>{{ item.gift.name }}</div><img
+                    <td>{{ item.user?.firstName || "no winner" }} {{item.user?.lastName  }}</td>
+    <td>{{  item.user?.phone  }}</td>
+    <td>{{  item.user?.email  }}</td>
+    <td> <div>{{ item.gift?.name }}</div><img
         [src]="'/' +  item.gift.imgUrl"
         [alt]="item.gift.name"
         width="100"

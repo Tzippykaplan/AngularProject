@@ -155,10 +155,12 @@
             [(ngModel)]="gift.name"
             required
             autofocus
+            #name="ngModel"
             (blur)="checkUniqueName()"
             [ngClass]="{'has-error': !isUniqueName && submitted || !gift.name && submitted}"
-          />
-          <small class="p-error" *ngIf=" !gift.name">
+           
+            />
+          <small class="p-error" *ngIf=" name.touched && !gift.name ">
             Name is required.
           </small>
           <small class="p-error" *ngIf=" !isUniqueName && gift.name">

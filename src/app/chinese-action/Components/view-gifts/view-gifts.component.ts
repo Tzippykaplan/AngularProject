@@ -19,7 +19,7 @@ import { GlobalService } from '../../../services/global.service';
 
 })
 export class ViewGiftsComponent {
-  layout: string = 'grid';
+  layout: "list" | "grid" = "grid";
     gifts!:Gift[];
     cart:any
 globalSrv=inject(GlobalService)
