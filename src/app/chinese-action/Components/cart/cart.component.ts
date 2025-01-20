@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
-  products!:[];
+  products:[]=[];
   constructor( private router: Router, ) {}
 
   ngOnInit() {
@@ -17,5 +17,27 @@ export class CartComponent {
   }
   payment(){
     this.router.navigate(['/payLogin', { id: 123 }]);
+  }
+subQuantity(product:any){
+  this.products= this.getCartFromSession();
+  this.products.map((item:any)=>item.gift.id==product.gift.id?item.quantity
+>1?item.quantity--:this.deleteFromCart(item):'')
+sessionStorage.setItem("cart",JSON.stringify( this.products))
+  }
+addQuantity(product:any){
+  this.products= this.getCartFromSession();
+  this.products.map((item:any)=>item.gift.id==product.gift.id?item.quantity++:'')
+    sessionStorage.setItem("cart",JSON.stringify(this.products))
+    
+  }
+  getCartFromSession():any{
+  return JSON.parse(sessionStorage.getItem("cart")||"[]")
+
+  }
+  deleteFromCart(deleteProduct:any){
+let cart= this.getCartFromSession();
+cart=cart.filter((item:any)=>item.gift.id!=deleteProduct.gift.id)
+sessionStorage.setItem("cart",JSON.stringify( cart))
+this.products=this.getCartFromSession();
   }
 }
