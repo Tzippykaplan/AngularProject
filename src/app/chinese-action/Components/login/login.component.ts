@@ -34,7 +34,7 @@ hideDialog() {
   debugger
   this.visibleChange.emit(false)
   this.globalService.setLoginView(false)
-  console.log("lllllllllll");
+
   
 }
 login() {
