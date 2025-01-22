@@ -18,7 +18,8 @@ export class CartComponent {
       
   }
   payment(){
-    this.router.navigate(['/payLogin', { id: 123 }]);
+    const user=JSON.parse(sessionStorage.getItem("user")||"null")
+    user?this.router.navigate(['/pay']):this.globalService.setLoginView(true)
   }
 subQuantity(product:any){
   this.products= this.getCartFromSession();
