@@ -1,0 +1,22 @@
+#colord {
+    background: #139aab; /* צבע הרקע */
+    border: 1px solid #139aab; /* צבע הגבול */
+    color: white; /* צבע הטקסט */
+  }
+  
+  #colord:hover {
+    background: #117e8b; /* צבע רקע בזמן ריחוף */
+    border-color: #117e8b; /* צבע גבול בזמן ריחוף */
+  }
+  
+  #colord-outlined {
+    background: transparent; /* רקע שקוף */
+    border: 1px solid #139aab; /* גבול מותאם */
+    color: #139aab; /* צבע הטקסט */
+  }
+  
+  #colord-outlined:hover {
+    background: rgba(19, 154, 171, 0.1); /* רקע שקוף בזמן ריחוף */
+    color: #117e8b; /* צבע טקסט בזמן ריחוף */
+    border-color: #117e8b; /* צבע גבול בזמן ריחוף */
+  }

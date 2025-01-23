@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Donor } from '../../../Models/donor/donor';
 import { DonorsService } from '../../../services/donor.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Gift } from '../../../Models/gift.model';
 
 @Component({
   selector: 'app-list-of-dodnors',
@@ -127,6 +128,30 @@ export class ListOfDonorsComponent {
   }
   refreshData(refresh:boolean){
   refresh?this.getData():""
+  }
+  items = [
+    {id:10,name:"a",description:"bbbbb",donorId:1,imgUrl:"2.jpeg",price:10},
+    {id:10,name:"ab",description:"bbbbb",donorId:1,imgUrl:"3.jpeg",price:10},
+    {id:10,name:"aac",description:"bbbbb",donorId:1,imgUrl:"1.png",price:10},
+  ];
+
+  selectedGifts:Gift[]=[]
+ 
+
+  selectAll = false;
+
+  onSelectAllChange(event:any) {
+      this.selectedGifts = event.checked ? [...this.items] : [];
+      this.selectAll = event.checked;
+      event.updateModel(this.selectedGifts, event.originalEvent)
+  }
+
+  onChange(event:any) {
+      const { originalEvent, value } = event
+      if(value) this.selectAll = value.length === this.items.length;
+  }
+  onGiftSelectionChange(event: any) {
+    console.log('Selected gifts:', event.value);
   }
 
 //  async savedonor() {
