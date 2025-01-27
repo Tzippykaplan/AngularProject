@@ -1,12 +1,6 @@
 
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { MenubarModule } from 'primeng/menubar';
-import { BadgeModule } from 'primeng/badge';
-import { AvatarModule } from 'primeng/avatar';
-import { InputTextModule } from 'primeng/inputtext';
-import { CommonModule } from '@angular/common';
-import { RippleModule } from 'primeng/ripple';
 import { Router } from '@angular/router';
 import { GlobalService } from '../../../services/global.service';
 import { AuthService } from '../../../services/auth.service';
@@ -15,75 +9,95 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
-  authService=inject(AuthService)
-  globalSrv=inject(GlobalService)
+  authService = inject(AuthService)
+  globalSrv = inject(GlobalService)
   visible: boolean = false;
-  constructor(   private router: Router) {
-      
+  backGroundColor:string='#dee9fc'
+  firstLetter:string="A"
+
+  firstLetterChange(first:string){
+    this.firstLetter=first
+  }
+  constructor(private router: Router) {
+
+  }
+  openCart() {
+    this.globalSrv.toggleCartVisibility(true);
+  }
+  setVisibleLogin(){
+    this.globalSrv.setLoginView(true)
   }
   ngOnInit() {
- this.setItems()
+    this.setItems()
+    this.calculateQuantityOfCart()
   }
-  setItems(){
-    this.globalSrv.getIsAdmin().subscribe(data=>{this.items = [
-      {
+  private calculateQuantityOfCart(): void {
+    const arrayString = sessionStorage.getItem('cart');
+    if (arrayString) {
+      const array = JSON.parse(arrayString);
+      this.globalSrv.setCartQuantity(array.reduce((accumulator:number, currentValue:any) => accumulator + currentValue.quantity, 0));
+    } else {
+      this.globalSrv.setCartQuantity(0); 
+    }
+  }
+  setItems() {
+    this.globalSrv.getIsAdmin().subscribe(data => {
+      this.items = [
+        {
           label: 'Home',
           icon: 'pi pi-home',
           routerLink: '',
 
-      },
-      {
-        label: 'Login',
-    routerLink: '/login',
-    icon: 'pi pi-sign-in'
-      },
+        },
+        {
+          label: 'Login',
+          icon: 'pi pi-sign-in'
+        },
 
-      {
+        {
           label: 'Shop Gifts',
           icon: 'pi pi-gift',
           routerLink: 'viewGift',
-      },
+        },
 
-  ];
-  this.authService.hasRole([1])?this.items.push({
-    label: 'Manager',
-    icon: 'pi pi-user-edit',
-    items: [
-        {
+      ];
+      this.authService.hasRole([1]) ? this.items.push({
+        label: 'Manager',
+        icon: 'pi pi-user-edit',
+        items: [
+          {
             label: 'Gifts',
             icon: 'pi pi-gift',
             routerLink: '/admin/gifts'
 
-        },
-        {
+          },
+          {
             label: 'Donors',
             icon: 'pi pi-users',
             routerLink: '/admin/donors',
 
-          
-        },
-        {
+
+          },
+          {
             label: 'Users',
             icon: 'pi pi-user'
 
-        },        {
-          label: 'Raffle',
-          icon: 'pi pi-tags',
-          routerLink: '/admin/raffle',
+          }, {
+            label: 'Raffle',
+            icon: 'pi pi-tags',
+            routerLink: '/admin/raffle',
 
-      }
-  
-    ]
-}):"" })
-   
+          }
+
+        ]
+      }) : ""
+    })
+    
   }
-  navgateToCart(){
+
+  navgateToCart() {
     this.router.navigate(['/cart']);
-}
-setVisibleLogin(){
-  debugger
-  this.globalSrv.setLoginView(true)
-}
+  }
 }

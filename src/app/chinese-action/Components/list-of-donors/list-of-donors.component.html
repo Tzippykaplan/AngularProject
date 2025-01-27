@@ -1,22 +1,20 @@
-<p>list-of-dodnors works!</p>
-<div >
+<div class="card">
   <p-toast />
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
-      <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2 " (onClick)="openNew()" />
+      <p-button severity="success" label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
       <p-button severity="danger" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedDonors()"
         [disabled]="!selectedDonors || !selectedDonors.length" />
     </ng-template>
 
     <ng-template pTemplate="right">
-      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
-        class="mr-2 inline-block" />
-      <p-button severity="help" label="Export" icon="pi pi-upload" />
+
+      <img src="1234.png" id="exportToExecel"severity="help" label="Export" icon="pi pi-upload" (click)="exportToExcel()"/>
     </ng-template>
   </p-toolbar>
 
   <p-table #dt [value]="donors" [rows]="10" [paginator]="true"
-    [globalFilterFields]="['Name', 'country.name', 'representative.name', 'status']"
+    [globalFilterFields]="['firstName', 'lastName', 'email']"
     [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDonors" [rowHover]="true" dataKey="id"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
     <ng-template pTemplate="caption">
@@ -24,14 +22,8 @@
         <h5 class="m-0">Manage Donor</h5>
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
-          <input
-              pInputText
-              type="text"
-              placeholder="Search..."
-              filterBy="gift.name"
-              filterPlaceholder="Filter by name"/>
-              <!-- (input)="dt.filterGlobal($event.target.value, 'contains')"
-              placeholder="Search..." -->
+          <input pInputText type="text" placeholder="Search..."  filterPlaceholder="Filter by name"
+            (input)="onSearch($event)" />
         </span>
       </div>
     </ng-template>
@@ -53,6 +45,7 @@
         <th pSortableColumn="listOfGifts" style="min-width: 10rem">
           donors Gifts <p-sortIcon field="listOfGifts" />
         </th>
+
         <th></th>
       </tr>
     </ng-template>
@@ -65,23 +58,26 @@
         <td>{{donor.lastName}}</td>
         <td>{{ donor.email}}</td>
         <td>
-          <p-listbox 
-          [options]="items" 
-          [(ngModel)]="selectedGifts" 
-          optionLabel="name" 
-          [style]="{ width: '15rem' }" 
-          [listStyle]="{ 'max-height': '70px' }" 
-          [multiple]="true"
-          [metaKeySelection]="false"
-          (onChange)="onGiftSelectionChange($event)">
-        <ng-template let-item pTemplate="item">
-          <div class="flex align-items-center gap-2">
-            <img [src]="'/' +item.imgUrl" style="width: 18px" />
-            <div>{{ item.name }}</div>
-          </div>
-        </ng-template>
-      </p-listbox>
-      
+@if(donor.myGiftsList.length>0){
+        <p-listbox 
+        [options]="donor.myGiftsList" 
+        optionLabel="name" 
+        [style]="{ width: '15rem' }" 
+        [listStyle]="{ 'max-height': '70px' }" 
+        [multiple]="true"
+        [metaKeySelection]="false"
+       
+  >
+      <ng-template let-item pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <img [src]="'/' +item.imgUrl" style="width: 18px" />
+          <div>{{ item.name }}</div>
+        </div>
+      </ng-template>
+    </p-listbox>}
+    @else{
+      no gifts
+    }
   </td>
         <td>
           <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
@@ -97,7 +93,7 @@
       </div>
     </ng-template>
   </p-table>
-    <app-donor-form [donor]="donor" [(visible)]="visible" (refreshData)="refreshData($event)"/>
-  <!-- [style]="{width:'450px'}" -->
+
+  <app-donor-form [donor]="donor" [(visible)]="visible" (refreshData)="refreshData($event)" />
   <p-confirmDialog [style]="{width:'450px'}" />
 </div>

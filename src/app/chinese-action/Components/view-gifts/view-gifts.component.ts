@@ -8,9 +8,13 @@ import { DataViewModule } from 'primeng/dataview';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { GlobalService } from '../../../services/global.service';
+import { RaffleComponent } from '../raffle/raffle.component';
+import { RaffleService } from '../../../services/raffle.service';
+import { switchAll } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-view-gifts',
@@ -19,28 +23,45 @@ import { GlobalService } from '../../../services/global.service';
 
 })
 export class ViewGiftsComponent {
-  layout: "list" | "grid" = "grid";
-    gifts!:Gift[];
-    cart:any
-globalSrv=inject(GlobalService)
-    constructor(private giftService: GiftsService,   private router: Router) {
-      
-    }
+  layout: string = 'list';
+  option: any = 'grid'
+  gifts!: Gift[];
+  cart: any
+  globalSrv = inject(GlobalService)
+  raffleService=inject(RaffleService)
+  constructor(private giftService: GiftsService, private router: Router) {
 
-    ngOnInit() {
-        this.giftService.getAll().subscribe(data=>{this.gifts= data.slice(0, 12)
-          console.log(data);
-          
-        })
-    }
-    addToCart(gift:Gift){
+  }
+  UpdatePermition(){
+    this.raffleService.getDateOfRaffle().subscribe(date=>{
+      this.globalSrv.setIsRaffleAlowed(formatDate(date,"YYYY-MM-DD hh:mm:ss",'en_US')<formatDate(new Date(), "YYYY-MM-DD hh:mm:ss",'en_US')?false:true)
+      console.log(this.globalSrv.getIsRaffleAlowed());
+      
+})}
+  ngOnInit() {
+    this.giftService.getAll().subscribe(data => {
+      this.gifts = data
+      console.log(data);
+      this.UpdatePermition()
+
+    })
+  }
+  addToCart(gift: Gift) {
     this.cart = JSON.parse(sessionStorage.getItem("cart") || "[]")
-     const currentItem= this.cart.find((item:any)=>item.gift.id===gift.id)
-      currentItem?currentItem.quantity+=1:this.cart.push({"gift":gift,"quantity":1})
-      sessionStorage.setItem("cart",JSON.stringify(this.cart))
-      this.globalSrv.setCartQuantity(1);
-    }
-    goToCart(){
-      this.router.navigate(['/cart']);
-    }
+    const currentItem = this.cart.find((item: any) => item.gift.id === gift.id)
+    currentItem ? currentItem.quantity += 1 : this.cart.push({ "gift": gift, "quantity": 1 })
+    sessionStorage.setItem("cart", JSON.stringify(this.cart))
+    this.globalSrv.setCartQuantity(1);
+    console.log(this.cart);
+    Swal.fire({
+      icon: "success",
+      title: "gift added to  cart",
+      showConfirmButton: false,
+      timer: 1000
+    });
+    
+  }
+  goToCart() {
+    this.router.navigate(['/cart']);
+  }
 }

@@ -1,5 +1,4 @@
-<p>raffle works!</p>
-<p-inplace (onActivate)="loadData()">
+<!-- <p-inplace (onActivate)="loadData()" id="raffle">
     <ng-template pTemplate="display">
         <span>raffle</span>
     </ng-template>
@@ -10,7 +9,10 @@
                     winners list
                 </div>
             </ng-template>
+
             <ng-template pTemplate="header">
+                <tr *ngIf="loaded" style="align-items: center; text-align: center; justify-content: center;"><p-progressSpinner   ariaLabel="loading" />
+                </tr>
                 <tr>
                     <th>Name</th>
                     <th>Phone</th>
@@ -18,21 +20,20 @@
                     <th>Wined-at</th>
                 </tr>
             </ng-template>
+
             <ng-template pTemplate="body" let-item>
                 <tr>
-                    <td>{{ item.user?.firstName || "no winner" }} {{item.user?.lastName  }}</td>
-    <td>{{  item.user?.phone  }}</td>
-    <td>{{  item.user?.email  }}</td>
-    <td> <div>{{ item.gift?.name }}</div><img
-        [src]="'/' +  item.gift.imgUrl"
-        [alt]="item.gift.name"
-        width="100"
-        class="border-round"
-      />
-
-        </td>
+                    <td>{{ item.user?.firstName ||'no winner' }} {{item.user?.lastName }}</td>
+                    <td>{{ item.user?.phone }}</td>
+                    <td>{{ item.user?.email }}</td>
+                    <td>
+                        <div>{{ item.gift.name }}</div><img [src]="'/' +  item.gift.imgUrl" [alt]="item.gift.name"
+                            width="100" class="border-round" />
+                    </td>
                 </tr>
             </ng-template>
+          
+
             <ng-template pTemplate="summary">
                 <div class="flex align-items-center justify-content-between">
                     In total there are {{raffleList ? raffleList.length : 0 }} raffleList.
@@ -40,4 +41,95 @@
             </ng-template>
         </p-table>
     </ng-template>
-</p-inplace>
+</p-inplace> -->
+
+<!-- <div *ngIf="alowedRaffle">
+    <div class="raffle-container">
+      <button class="raffle-button" (click)="loadData()">Start Raffle</button>
+      <div class="spinner" *ngIf="isLoading"></div>
+      <div *ngIf="isLoading" class="loading-text">Loading results...</div>
+    </div>
+  </div>
+  
+  <ng-template *ngIf="isLoading">
+    <div class="spinner" *ngIf="isLoading"></div>
+    <div *ngIf="isLoading" class="loading-text">Loading results...</div>
+      <ng-template pTemplate="content" *ngIf="!isLoading && !alowedRaffle">
+        <p-table [value]="raffleList" [tableStyle]="{'min-width': '60rem'}" >
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+              Winners list
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Wined-at</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>{{ item.user?.firstName || 'no winner' }} {{ item.user?.lastName }}</td>
+              <td>{{ item.user?.phone }}</td>
+              <td>{{ item.user?.email }}</td>
+              <td>
+                <div>{{ item.gift.name }}</div>
+                <img [src]="'/' + item.gift.imgUrl" [alt]="item.gift.name" width="100" class="border-round" />
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+              In total, there are {{ raffleList ? raffleList.length : 0 }} raffle entries.
+            </div>
+          </ng-template>
+        </p-table>
+      </ng-template>
+  </ng-template> -->
+  <div *ngIf="alowedRaffle; else raffleContent">
+    <div class="raffle-container">
+      <button class="raffle-button" (click)="loadData()">Start Raffle</button>
+      <div>      </div>
+      <div *ngIf="isLoading" class="spinner"></div>
+      <div *ngIf="isLoading" class="loading-text">Loading results...</div>
+    </div>
+  </div>
+
+  <ng-template #raffleContent>
+    <div *ngIf="!isLoading">
+      <p-table [value]="raffleList" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            Winners list
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Wined-at</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.user?.firstName || 'no winner' }} {{ item.user?.lastName }}</td>
+            <td>{{ item.user?.phone }}</td>
+            <td>{{ item.user?.email }}</td>
+            <td>
+              <div>{{ item.gift.name }}</div>
+              <img [src]="'/' + item.gift.imgUrl" [alt]="item.gift.name" width="100" class="border-round" />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            In total, there are {{ raffleList ? raffleList.length : 0 }} raffle entries.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+  

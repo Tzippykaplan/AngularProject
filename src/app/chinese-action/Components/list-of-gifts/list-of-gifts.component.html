@@ -19,22 +19,14 @@
       </ng-template>
   
       <ng-template pTemplate="right">
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          class="mr-2 inline-block"
-        />
-        <p-button severity="help" label="Export" icon="pi pi-upload" />
+        <img src="1234.png" id="exportToExecel"severity="help" label="Export" icon="pi pi-upload" (click)="exportToExcel()"/>
       </ng-template>
     </p-toolbar>
   
     <p-table
       #dt
       [value]="gifts"
-      [rows]="10"
+      [rows]="8"
       [paginator]="true"
       [globalFilterFields]="['name', 'description', 'donorId', 'price']"
       [tableStyle]="{ 'min-width': '75rem' }"
@@ -49,12 +41,8 @@
           <h5 class="m-0">Manage Gifts</h5>
           <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
-            <input
-              pInputText
-              type="text"
-              (input)="onSearch($event)"
-              placeholder="Search..."
-            />
+            <input pInputText type="text" placeholder="Search..."  filterPlaceholder="Filter by name"
+            (input)="onSearch($event)" />
           </span>
         </div>
       </ng-template>
@@ -87,7 +75,7 @@
           <td>{{ gift.name }}</td>
           <td>
             <img
-              [src]="'/' + gift.imgUrl"
+              [src]="gift.imgUrl"
               [alt]="gift.name"
               width="50"
               class="shadow-4"
@@ -95,13 +83,7 @@
           </td>
           <td>{{gift.price}}</td>
           <td>{{ gift.description}}</td>
-          <!-- <td>
-            <p-rating
-              [(ngModel)]="gift.rating"
-              [readonly]="true"
-              [cancel]="false"
-            />
-          </td> -->
+         
           <td>
         {{gift.donorId}}
           </td>
@@ -140,12 +122,13 @@
     >
       <ng-template pTemplate="content">
         <img
-          [src]="'/' + gift.imgUrl"
+          [src]="gift.imgUrl"
           [alt]="gift.imgUrl"
           [alt]="gift.name"
           width="100"
           *ngIf="gift.imgUrl"
         />
+        <div>{{ gift.imgUrl}}</div>
         <div class="field">
           <label for="name">Name</label>
           <input
@@ -158,9 +141,8 @@
             #name="ngModel"
             (blur)="checkUniqueName()"
             [ngClass]="{'has-error': !isUniqueName && submitted || !gift.name && submitted}"
-           
-            />
-          <small class="p-error" *ngIf=" name.touched && !gift.name ">
+          />
+          <small class="p-error" *ngIf="name.touched && !gift.name">
             Name is required.
           </small>
           <small class="p-error" *ngIf=" !isUniqueName && gift.name">
@@ -189,6 +171,7 @@
             optionValue="id"
             value="gift.donorId"
             class="w-full"
+            
           >
             <ng-template let-choosenOption pTemplate="selectedItem">
               <p-tag [value]="choosenOption.firstName"></p-tag>
@@ -214,20 +197,16 @@
             Price is required and should be at least 10.
           </small>
         </div>
-        <div class="field">
-          <label for="ImgeUrl">ImgeUrl</label>
-          <input
-          type="text"
-          min="10"
-          cols="20"
-          pInputText
-          id="ImgeUrl"
-          [(ngModel)]="gift.imgUrl"
-          required
-          autofocus
+
+        <div>
+
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" #fileInput>
           
-          />
-        </div>
+          <button (click)="fileInput.click()">IMPORT</button>
+          
+         
+          
+          </div>
        
   
       </ng-template>
@@ -250,6 +229,6 @@
   
     <p-confirmDialog [style]="{width:'450px'}" />
   </div>
-  <button (click)="todonors()">Go to Donors</button>
+ 
   
  

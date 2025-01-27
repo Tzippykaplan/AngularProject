@@ -18,6 +18,7 @@ export class RaffleService {
        return this.http.get<RaffleResponse[]>(`${this.apiUrl}/raffle`);
      }
      creatLotteryTickets(user:User,cart:any):Observable<LotteryTicket[]>{
+      debugger
       const LotteryTickets:LotteryTicket[]=[];
       cart.forEach((item:any)=>{
         const lotteryTicket: LotteryTicket = { userId: user.id, giftId: item.gift.id ,id:0};
@@ -27,6 +28,7 @@ export class RaffleService {
            i++
           }
       })
+      
       return this.creatLotteryTicket(LotteryTickets);
 
      }
@@ -34,5 +36,12 @@ export class RaffleService {
     
           return (this.http.post<LotteryTicket[]>(this.apiUrl,lotteryTickets ))
  } 
+ getDateOfRaffle(): Observable<Date> {
+  return this.http.get<Date>(`${this.apiUrl}/DateOfraffle`);
+}
+
+setDateOfRaffle(dateToset:Date): Observable<Date> {
+  return this.http.post<Date>(`${this.apiUrl}/DateOfraffle`,dateToset);
+}
     
 }

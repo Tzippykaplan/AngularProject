@@ -27,6 +27,7 @@ import { RaffleComponent } from './Components/raffle/raffle.component';
 import { RoleType } from '../Models/user/user.model';
 import { roleGuard } from './Guard/role.guard';
 import { ListboxModule } from 'primeng/listbox';
+import { CountdownPipe } from './Pipe/countdown-pipe.pipe';
 
 
 
@@ -48,6 +49,7 @@ import { ListboxModule } from 'primeng/listbox';
     NavbarComponent,
     HomeComponent,
     RaffleComponent,
+    CountdownPipe
     ],
   imports: [ 
     ListboxModule,

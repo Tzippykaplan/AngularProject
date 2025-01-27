@@ -1,58 +1,70 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { RoleType, User } from '../../../Models/user/user.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { GlobalService } from '../../../services/global.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-
-
 export class LoginComponent {
-  // activatedRoute=inject(ActivatedRoute)
-
   @Input() visible!: boolean;
-  @Output() visibleChange:EventEmitter<boolean>=new EventEmitter(false);
   frmLogin!: FormGroup;
-  userService=inject(UserService) 
+  userService = inject(UserService)
   globalService = inject(GlobalService)
-  constructor(private router:Router,private activatedRoute:ActivatedRoute){
-  this.frmLogin = new FormGroup({
-        email: new FormControl('', [Validators.required]),
-        password: new FormControl('', [Validators.required]),
+  @Output() firstLetterChange: EventEmitter<string> = new EventEmitter<string>(false);
 
-})}
-ngOnInit(){
-  debugger
-  console.log( this.activatedRoute.pathFromRoot[0].snapshot.children[0].url[0].path);
-}
-hideDialog() {
-  debugger
-  this.visibleChange.emit(false)
-  this.globalService.setLoginView(false)
+  title!: string
+  source!: string;
+  a!: ActivatedRouteSnapshot
 
-  
-}
-login() {
-  if (this.frmLogin.valid) {
-    this.userService.Login(this.frmLogin.value).subscribe({
-      next: (data) => {
-        console.log(data);
-        sessionStorage.setItem("user", JSON.stringify(data));
-       this.globalService.setIsAdmin(true)
 
-      },
-      error: (err) => {
-        console.error("Login failed:", err);
-        this.router.navigate(['register']);
-      },
-    });
-  } 
-  this.router.navigate(['pay'])
-}
+  constructor(private router: Router) {
+    this.frmLogin = new FormGroup({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
 
+    })
+  }
+  ngOnChanges() {
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.source = this.router.url;
+        console.log(this.source);
+
+      });
+  }
+
+  onDialogHide() {
+    this.frmLogin.reset()
+    this.globalService.setLoginView(false);
+    this.source == '/cart' ? this.router.navigate(['/pay']) :this.source=='/register'?this.router.navigate(['/']): this.router.navigate([this.source])
+
+  }
+  login() {
+    if (this.frmLogin.valid) {
+      this.userService.Login(this.frmLogin.value).subscribe({
+        next: (data) => {
+          sessionStorage.setItem("user", JSON.stringify(data));
+          this.firstLetterChange.emit(data.firstName.charAt(0).toUpperCase())
+          this.globalService.setIsAdmin(data.role == RoleType.USER ? false : true)
+          this.source == '/cart' ? this.router.navigate(['/pay']) :this.source=='/register'?this.router.navigate(['/']): this.router.navigate([this.source])
+        },
+        error: (err) => {
+          console.error("Login failed:", err);
+          this.router.navigate(['register']);
+        },
+      });
+      this.globalService.setLoginView(false)
+    }
+  }
+  getvisible() {
+    this.visible = this.globalService.loginView();
+  }
 }
