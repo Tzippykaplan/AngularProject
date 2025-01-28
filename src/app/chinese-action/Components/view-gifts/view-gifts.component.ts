@@ -34,7 +34,7 @@ export class ViewGiftsComponent {
   }
   UpdatePermition(){
     this.raffleService.getDateOfRaffle().subscribe(date=>{
-      this.globalSrv.setIsRaffleAlowed(formatDate(date,"YYYY-MM-DD hh:mm:ss",'en_US')<formatDate(new Date(), "YYYY-MM-DD hh:mm:ss",'en_US')?false:true)
+      this.globalSrv.setIsRaffleAlowed(formatDate(date,"YYYY-MM-DD hh:mm:ss",'en_US')<formatDate(new Date(), "YYYY-MM-DD hh:mm:ss",'en_US')||this.globalSrv.getIsRaffle()?false:true)
       console.log(this.globalSrv.getIsRaffleAlowed());
       
 })}

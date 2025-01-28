@@ -25,6 +25,7 @@ export class RaffleComponent {
 this.raffleService.getRaffleResponseList().subscribe((data) => (this.raffleList = data));
 this.isLoading=false
 this.alowedRaffle=false
+this.globalService.setIsRaffle(true)
   }, 3000);
 }
   

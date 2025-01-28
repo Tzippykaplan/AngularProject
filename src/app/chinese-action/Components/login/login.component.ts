@@ -30,6 +30,8 @@ export class LoginComponent {
 
     })
   }
+
+  
   ngOnChanges() {
 
     this.router.events

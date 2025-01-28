@@ -15,6 +15,7 @@ export class GlobalService {
   cartVisibleSubject = new BehaviorSubject<boolean>(false);
   cartVisible$ = this.cartVisibleSubject.asObservable();
   IsRaffleAlowed=signal(true)
+  IsRaffle=signal(false)
 
   toggleCartVisibility(isVisible: boolean) {
     this.cartVisibleSubject.next(isVisible); 
@@ -42,12 +43,18 @@ ngOnChanges() {
     this.cartQuantity.update(PrevcartQuantity => PrevcartQuantity + quantity);
   }
   resetCartQuantity() {
+    sessionStorage.removeItem("cart")
     this.cartQuantity.update(PrevcartQuantity => PrevcartQuantity - PrevcartQuantity);
   }
   getLoginView() {
     return this.loginView()
   }
-
+  getIsRaffle(){
+    return this.IsRaffle()
+  }
+  setIsRaffle(bool:boolean){
+this.IsRaffle.set(bool)
+  }
   setLoginView(view: boolean) {
     debugger
     this.loginView.set(view);
